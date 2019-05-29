@@ -22,12 +22,13 @@ public class MatcherImpl implements Matcher {
 
     private int lineOffset;
 
-    MatcherImpl() {
-        this.part = TextPart.EMPTY;
+    MatcherImpl(TextPart part) {
+        this.part = part;
     }
 
-    private MatcherImpl(TextPart part) {
-        this.part = part;
+    @Override
+    public List<MatchingResult> call() {
+        return find();
     }
 
     @Override
@@ -45,20 +46,14 @@ public class MatcherImpl implements Matcher {
         return Collections.emptyList();
     }
 
-    @Override
-    public Matcher applyFor(TextPart part) {
-        return new MatcherImpl(part);
-    }
-
     private void scanLine(String line, List<MatchingResult> results) {
         if (!line.isEmpty()) {
             int charOffset = 0;
             try (Scanner scanner = new Scanner(line).useDelimiter("[\\s]+")) {
                 while (scanner.hasNext()) {
-                    String next = scanner.next();
-                    charOffset += next.length();
-                    String word = handleWord(next);
-
+                    String rawWord = scanner.next();
+                    charOffset += rawWord.length();
+                    String word = processWord(rawWord);
                     for (String name : NAMES) {
                         if (name.equals(word)) {
                             results.add(MatchingResult.of(name, lineOffset, charOffset));
@@ -69,8 +64,8 @@ public class MatcherImpl implements Matcher {
         }
     }
 
-    private String handleWord(String word) {
-        return word.replaceAll("[!@#№\\$%\\^&\\*\\(\\)_\\-=\\+}{\\]\\[|\\/\":;?.,><`~]*", "");
+    private String processWord(String word) {
+        return word.replaceAll("[!@#№$%^&*()_\\-=+}{\\]\\[|/\":;?.,><`~]*", "");
     }
 
 }

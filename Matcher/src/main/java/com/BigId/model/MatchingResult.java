@@ -15,10 +15,7 @@ public class MatchingResult {
     }
 
     public static MatchingResult of(String matched, int lineOffset, int charOffset) {
-        if (matched != null && !matched.isEmpty()) {
-            return new MatchingResult(matched, lineOffset, charOffset);
-        }
-        return null;
+        return new MatchingResult(matched, lineOffset, charOffset);
     }
 
     @Override
@@ -28,14 +25,6 @@ public class MatchingResult {
 
     public String getMatched() {
         return matched;
-    }
-
-    public int getLineOffset() {
-        return lineOffset;
-    }
-
-    public int getCharOffset() {
-        return charOffset;
     }
 
 }

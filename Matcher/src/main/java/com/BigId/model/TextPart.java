@@ -41,8 +41,4 @@ public class TextPart {
         return content;
     }
 
-    public int getSize() {
-        return size;
-    }
-
 }
