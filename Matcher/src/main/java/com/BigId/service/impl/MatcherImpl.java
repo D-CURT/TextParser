@@ -52,20 +52,17 @@ public class MatcherImpl implements Matcher {
             try (Scanner scanner = new Scanner(line).useDelimiter("[\\s]+")) {
                 while (scanner.hasNext()) {
                     String rawWord = scanner.next();
-                    charOffset += rawWord.length();
-                    String word = processWord(rawWord);
                     for (String name : NAMES) {
-                        if (name.equals(word)) {
-                            results.add(MatchingResult.of(name, lineOffset, charOffset));
+                        if (rawWord.contains(name)) {
+                            int nameFirstIndex = rawWord.lastIndexOf(name);
+                            results.add(MatchingResult.of(name, lineOffset, charOffset += nameFirstIndex));
+                            charOffset += rawWord.substring(nameFirstIndex).length();
                         }
                     }
+                    charOffset += rawWord.length();
                 }
             }
         }
-    }
-
-    private String processWord(String word) {
-        return word.replaceAll("[!@#№$%^&*()_\\-=+}{\\]\\[|/\":;?.,><`~]*", "");
     }
 
 }
