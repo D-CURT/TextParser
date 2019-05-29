@@ -1,11 +1,12 @@
-package com.BigId.util;
+package com.BigId.service.impl;
 
 import com.BigId.model.MatchingResult;
 import com.BigId.model.TextPart;
+import com.BigId.service.Matcher;
 
 import java.util.*;
 
-public class Matcher {
+public class MatcherImpl implements Matcher {
 
     private static final List<String> NAMES = Arrays.asList(
             "James", "John", "Robert", "Michael", "William", "David", "Richard",
@@ -21,21 +22,22 @@ public class Matcher {
 
     private int lineOffset;
 
-    public Matcher() {
+    MatcherImpl() {
         this.part = TextPart.EMPTY;
     }
 
-    private Matcher(TextPart part) {
+    private MatcherImpl(TextPart part) {
         this.part = part;
     }
 
+    @Override
     public List<MatchingResult> find() {
         if (part != TextPart.EMPTY) {
             List<MatchingResult> results = new ArrayList<>();
             lineOffset = part.getStartingLineOffset();
             try (Scanner scanner = new Scanner(part.getContent())) {
-                while (scanner.hasNext()) {
-                    scanLine(scanner.next(), results);
+                while (scanner.hasNextLine()) {
+                    scanLine(scanner.nextLine(), results);
                 }
             }
             return results;
@@ -43,23 +45,25 @@ public class Matcher {
         return Collections.emptyList();
     }
 
+    @Override
     public Matcher applyFor(TextPart part) {
-        return new Matcher(part);
+        return new MatcherImpl(part);
     }
 
     private void scanLine(String line, List<MatchingResult> results) {
-        lineOffset++;
         if (!line.isEmpty()) {
             int charOffset = 0;
             try (Scanner scanner = new Scanner(line).useDelimiter("[\\s]+")) {
                 while (scanner.hasNext()) {
-                    String word = handleWord(scanner.next());
+                    String next = scanner.next();
+                    charOffset += next.length();
+                    String word = handleWord(next);
+
                     for (String name : NAMES) {
                         if (name.equals(word)) {
                             results.add(MatchingResult.of(name, lineOffset, charOffset));
                         }
                     }
-                    charOffset += word.length();
                 }
             }
         }

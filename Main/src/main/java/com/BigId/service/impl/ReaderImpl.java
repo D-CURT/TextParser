@@ -4,7 +4,7 @@ import com.BigId.model.MatchingResult;
 import com.BigId.model.TextPart;
 import com.BigId.service.MatchingService;
 import com.BigId.service.Reader;
-import com.BigId.util.Matcher;
+import com.BigId.service.Matcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 
@@ -31,7 +31,7 @@ public class ReaderImpl implements Reader {
             Matcher matcher;
             StringBuilder currentPart = new StringBuilder();
             while (iterator.hasNext()) {
-                currentPart.append(iterator.nextLine()).append(" ");
+                currentPart.append(iterator.nextLine());
                 if (++count % TextPart.FULL_SIZE == 0) {
                     startingLineOffset.set(count);
                     matcher = matchingService.getMatcher(TextPart.of(currentPart.toString(), startingLineOffset.get()));
@@ -39,15 +39,9 @@ public class ReaderImpl implements Reader {
                     currentPart.setLength(0);
                 }
             }
-            if (currentPart.length() > 0) {
-                startingLineOffset.set(count);
-                matcher = matchingService.getMatcher(TextPart.of(currentPart.toString(), startingLineOffset.get()));
-                results.addAll(matcher.find());
-            }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("File not found: " + fileName);
         }
-        System.out.println(results.size());
         return results;
     }
 

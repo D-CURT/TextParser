@@ -34,7 +34,7 @@ public class TextPart {
     }
 
     public int getStartingLineOffset() {
-        return startingLineOffset;
+        return startingLineOffset == ZERO_SIZE ? 1 : startingLineOffset;
     }
 
     public String getContent() {

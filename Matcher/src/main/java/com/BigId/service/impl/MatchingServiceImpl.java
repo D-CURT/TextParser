@@ -3,11 +3,11 @@ package com.BigId.service.impl;
 
 import com.BigId.model.TextPart;
 import com.BigId.service.MatchingService;
-import com.BigId.util.Matcher;
+import com.BigId.service.Matcher;
 
 public class MatchingServiceImpl implements MatchingService {
 
-    private static final ThreadLocal<Matcher> MATCHER = ThreadLocal.withInitial(Matcher::new);
+    private static final ThreadLocal<Matcher> MATCHER = ThreadLocal.withInitial(MatcherImpl::new);
 
     @Override
     public Matcher getMatcher(TextPart part) {

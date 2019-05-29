@@ -23,8 +23,19 @@ public class MatchingResult {
 
     @Override
     public String toString() {
-        return matched + " --> " +
-                "lineOffset=" + lineOffset +
-                ", charOffset=" + charOffset;
+        return "[lineOffset=" + lineOffset + ", charOffset=" + charOffset + "]";
     }
+
+    public String getMatched() {
+        return matched;
+    }
+
+    public int getLineOffset() {
+        return lineOffset;
+    }
+
+    public int getCharOffset() {
+        return charOffset;
+    }
+
 }
