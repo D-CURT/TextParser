@@ -18,12 +18,6 @@
         </dependency>
         <dependency>
             <groupId>com.BigId</groupId>
-            <artifactId>Matcher</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.BigId</groupId>
             <artifactId>Aggregator</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
