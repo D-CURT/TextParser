@@ -16,15 +16,6 @@
         <module>Aggregator</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.BigId</groupId>
-            <artifactId>Main</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>
