@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class AggregatorImpl implements Aggregator {
 
     @Override
-    public void aggregateAndPrint(List<MatchingResult> results) {
+    public void combineAndPrint(List<MatchingResult> results) {
         Map<String, List<MatchingResult>> preparedResults = results.stream()
                 .collect(Collectors.groupingBy(MatchingResult::getMatched));
         preparedResults.forEach((key, value) ->

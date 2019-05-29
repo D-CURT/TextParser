@@ -9,9 +9,11 @@ import java.util.List;
 
 public class Main {
 
+    private static final String PREFIX = Paths.get("").toAbsolutePath().toString();
+
     public static void main(String[] args) {
-        List<MatchingResult> results = new ReaderImpl().readFile(Paths.get("").toAbsolutePath().toString() + "\\Main\\src\\main\\resources\\input.txt");
-        new AggregatorImpl().aggregateAndPrint(results);
+        List<MatchingResult> results = new ReaderImpl().readFile(PREFIX + "\\Main\\src\\main\\resources\\input.txt");
+        new AggregatorImpl().combineAndPrint(results);
     }
 
 }

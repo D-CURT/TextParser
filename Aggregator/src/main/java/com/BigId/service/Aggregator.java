@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface Aggregator {
 
-    void aggregateAndPrint(List<MatchingResult> results);
+    void combineAndPrint(List<MatchingResult> results);
 
 }
