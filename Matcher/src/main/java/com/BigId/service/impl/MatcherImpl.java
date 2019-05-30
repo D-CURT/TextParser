@@ -4,7 +4,9 @@ import com.BigId.model.MatchingResult;
 import com.BigId.model.TextPart;
 import com.BigId.service.Matcher;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MatcherImpl implements Matcher {
 
@@ -37,34 +39,33 @@ public class MatcherImpl implements Matcher {
 
     @Override
     public List<MatchingResult> find() {
-        if (part != TextPart.EMPTY) {
-            List<MatchingResult> results = new ArrayList<>();
-            lineOffset = part.getStartingLineOffset();
-            try (Scanner scanner = new Scanner(part.getContent())) {
-                while (scanner.hasNextLine()) {
-                    scanLine(scanner.nextLine(), results);
-                }
-            }
-            return results;
-        }
-        return Collections.emptyList();
+        List<MatchingResult> results = new ArrayList<>();
+        lineOffset = part.getStartingLineOffset();
+        scanLine(part.getContent(), results);
+        return results;
     }
 
     private void scanLine(String line, List<MatchingResult> results) {
         if (!line.isEmpty()) {
+            String rawWord;
             int charOffset = 0;
-            try (Scanner scanner = new Scanner(line).useDelimiter(" ")) {
-                while (scanner.hasNext()) {
-                    String rawWord = scanner.next();
-                    for (String name : NAMES) {
-                        if (rawWord.contains(name)) {
-                            int nameFirstIndex = rawWord.lastIndexOf(name);
-                            results.add(MatchingResult.of(name, lineOffset, charOffset += nameFirstIndex));
-                            charOffset += rawWord.substring(nameFirstIndex).length();
+            StringBuilder word = new StringBuilder();
+            for (char symbol : line.toCharArray()) {
+                if (symbol == ' ') {
+                    if (word.length() > 0) {
+                        rawWord = word.toString();
+                        for (String name : NAMES) {
+                            if (rawWord.contains(name)) {
+                                int nameFirstIndex = rawWord.lastIndexOf(name);
+                                results.add(MatchingResult.of(name, lineOffset, charOffset += nameFirstIndex));
+                                charOffset += rawWord.substring(nameFirstIndex).length();
+                            }
                         }
+                        charOffset += rawWord.length();
+                        word.setLength(0);
                     }
-                    charOffset += rawWord.length();
-                }
+                    charOffset++;
+                } else word.append(symbol);
             }
         }
     }

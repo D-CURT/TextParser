@@ -9,6 +9,7 @@ import org.apache.commons.io.LineIterator;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -21,9 +22,10 @@ public class ReaderImpl implements Reader {
     private static final ThreadLocal<Integer> STARTING_LINE_OFFSET = new ThreadLocal<>();
 
     @Override
-    public List<MatchingResult> readFile(String fileName) {
+    public List<MatchingResult> readFile(String fileName, boolean useUrl) {
         List<MatchingResult> results = new ArrayList<>();
-        try (LineIterator iterator = FileUtils.lineIterator(new File(fileName), "UTF-8")) {
+        try (LineIterator iterator = FileUtils.lineIterator(
+                useUrl ? downloadFile(fileName) : new File(fileName), "UTF-8")) {
             StringBuilder currentPart = new StringBuilder();
             List<Matcher> matchers = new ArrayList<>();
             int count = 0;
@@ -45,6 +47,15 @@ public class ReaderImpl implements Reader {
             System.err.println("Concurrency exception");
         }
         return results;
+    }
+
+    private File downloadFile(String fileName) throws IOException {
+        File file = new File(fileName);
+        FileUtils.copyURLToFile(
+                new URL("http://norvig.com/big.txt"),
+                file
+        );
+        return file;
     }
 
     private void generateTextPart(List<Matcher> matchers, StringBuilder builder, int count) {

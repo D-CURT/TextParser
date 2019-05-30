@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface Reader {
 
-    List<MatchingResult> readFile(String fileName);
+    List<MatchingResult> readFile(String fileName, boolean useUrl);
 
 }

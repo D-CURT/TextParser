@@ -9,10 +9,10 @@ import java.util.List;
 
 public class Main {
 
-    private static final String PREFIX = Paths.get("").toAbsolutePath().toString();
+    private static final String FILE_PATH = Paths.get("").toAbsolutePath().toString() + Paths.get("\\Main\\src\\main\\resources\\input.txt");
 
     public static void main(String[] args) {
-        List<MatchingResult> results = new ReaderImpl().readFile(PREFIX + "\\Main\\src\\main\\resources\\input.txt");
+        List<MatchingResult> results = new ReaderImpl().readFile(FILE_PATH, false);
         new AggregatorImpl().combineAndPrint(results);
     }
 
