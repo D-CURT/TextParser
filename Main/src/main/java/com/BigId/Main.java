@@ -12,11 +12,8 @@ public class Main {
     private static final String PREFIX = Paths.get("").toAbsolutePath().toString();
 
     public static void main(String[] args) {
-        long start = System.currentTimeMillis();
         List<MatchingResult> results = new ReaderImpl().readFile(PREFIX + "\\Main\\src\\main\\resources\\input.txt");
         new AggregatorImpl().combineAndPrint(results);
-        long end = System.currentTimeMillis();
-        System.out.println("Time: " + (end - start));
     }
 
 }

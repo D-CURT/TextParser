@@ -28,10 +28,10 @@ public class ReaderImpl implements Reader {
             List<Matcher> matchers = new ArrayList<>();
             int count = 0;
             while (iterator.hasNext()) {
-                currentPart.append(iterator.nextLine()).append(" ");
                 if (++count % TextPart.FULL_SIZE == 0) {
                     generateTextPart(matchers, currentPart, count);
                 }
+                currentPart.append(iterator.nextLine()).append(" ");
             }
             if (currentPart.length() > 0) generateTextPart(matchers, currentPart, count);
             ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
@@ -44,7 +44,6 @@ public class ReaderImpl implements Reader {
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Concurrency exception");
         }
-        System.out.println(results.size());
         return results;
     }
 

@@ -22,6 +22,10 @@ public class MatcherImpl implements Matcher {
 
     private int lineOffset;
 
+    MatcherImpl() {
+        this.part = TextPart.EMPTY;
+    }
+
     MatcherImpl(TextPart part) {
         this.part = part;
     }
@@ -49,7 +53,7 @@ public class MatcherImpl implements Matcher {
     private void scanLine(String line, List<MatchingResult> results) {
         if (!line.isEmpty()) {
             int charOffset = 0;
-            try (Scanner scanner = new Scanner(line).useDelimiter("[\\s]+")) {
+            try (Scanner scanner = new Scanner(line).useDelimiter(" ")) {
                 while (scanner.hasNext()) {
                     String rawWord = scanner.next();
                     for (String name : NAMES) {
